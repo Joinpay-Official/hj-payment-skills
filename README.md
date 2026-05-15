@@ -27,6 +27,14 @@ bash scripts/package-importable-zip.sh
 
 生成的 `dist/hj-payment-skills-importable.zip` 可作为整包导入文件。
 
+### 后续更新
+
+如果后续 `hj-payment-skills` 新增子 Skill、参考资料或脚本，优先到官方仓库下载最新的 Skill 安装包：
+
+- GitHub 仓库：[Joinpay-Official/hj-payment-skills](https://github.com/Joinpay-Official/hj-payment-skills)
+
+下载后按目标 Agent 的导入方式重新安装或覆盖本地旧版本，避免只复制单个新增文件导致目录索引、依赖关系或共享规则不同步。
+
 ### 1. 先按产品线定位
 
 | 产品线 | 适合什么场景 | 从这里开始 |
