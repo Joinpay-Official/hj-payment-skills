@@ -1,7 +1,9 @@
-# 签名硬约束（MD5 / RSA）
+# 聚合支付签名硬约束（MD5 / RSA）
 
 > **唯一事实来源** — 本文件是整个 skill 包中签名约束的唯一定义。
 > 违反以下规则将导致服务端 **100% 验签失败**。
+
+本文件仅适用于聚合支付 `/tradeRt/*` 的 `p0_/q*/hmac` 协议。二级商户入网 `/altFunds` 使用 API Gateway JSON 协议，见 [api-gateway-signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/api-gateway-signing-rules.md)。
 
 ---
 

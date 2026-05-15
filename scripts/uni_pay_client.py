@@ -125,8 +125,6 @@ def cmd_pay(args, config):
         params["p7_Mp"] = args.mp
     if hasattr(args, "return_url") and args.return_url:
         params["p8_ReturnUrl"] = args.return_url
-    if hasattr(args, "sub_merchant_no") and args.sub_merchant_no:
-        params["q3_SubMerchantNo"] = args.sub_merchant_no
     if hasattr(args, "is_show_pic") and args.is_show_pic:
         params["q4_IsShowPic"] = args.is_show_pic
     if hasattr(args, "open_id") and args.open_id:
@@ -245,7 +243,6 @@ def main():
     pay_parser.add_argument("--product-desc", help="商品描述")
     pay_parser.add_argument("--mp", help="公用回传参数")
     pay_parser.add_argument("--return-url", help="页面跳转地址")
-    pay_parser.add_argument("--sub-merchant-no", help="子商户编号")
     pay_parser.add_argument("--is-show-pic", help="是否展示二维码(填1)")
     pay_parser.add_argument("--open-id", help="微信Openid（公众号/小程序必填）")
     pay_parser.add_argument("--auth-code", help="付款码（被扫必填）")

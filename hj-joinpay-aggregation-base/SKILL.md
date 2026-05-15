@@ -26,6 +26,14 @@ metadata:
 
 ---
 
+## 适配版本与定位
+
+| 项目 | 内容 |
+|------|------|
+| Skill 版本 | `1.1.0` |
+| 定位 | 聚合支付公共基座 |
+| 适用范围 | 聚合支付初始化、产品选型、公共参数 |
+
 ## 前置依赖
 
 ### 凭据收集（代码生成前必须完成）
@@ -102,7 +110,7 @@ MD5/RSA 签名规则、代码实现和错误排查 → [../hj-payment-integratio
 | 前缀 | 含义 | 示例 |
 |------|------|------|
 | `p0` ~ `p9` | 通用基础参数 | p0_Version, p1_MerchantNo, p3_Amount, p9_NotifyUrl |
-| `q1` ~ `qz` | 扩展/渠道参数 | q1_FrpCode, qa_TradeMerchantNo, q3_SubMerchantNo |
+| `q1` ~ `qz` | 扩展/渠道参数 | q1_FrpCode, qa_TradeMerchantNo, q5_OpenId |
 | `ra` ~ `rz` | 响应字段 | ra_Code, rb_CodeMsg, rc_Result |
 | `hmac` | 签名字段 | 请求和响应均含此字段 |
 

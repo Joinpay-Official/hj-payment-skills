@@ -53,7 +53,6 @@ type UnifiedPayRequest struct {
 	ProductDesc     string
 	Mp              string
 	ReturnURL       string
-	SubMerchantNo   string
 	IsShowPic       string
 	OpenId          string
 	AuthCode        string
@@ -108,7 +107,6 @@ func (c *JoinPayClient) UnifiedPay(req UnifiedPayRequest) (APIResponse, error) {
 	setIfNotEmpty(params, "p6_ProductDesc", req.ProductDesc)
 	setIfNotEmpty(params, "p7_Mp", req.Mp)
 	setIfNotEmpty(params, "p8_ReturnUrl", req.ReturnURL)
-	setIfNotEmpty(params, "q3_SubMerchantNo", req.SubMerchantNo)
 	setIfNotEmpty(params, "q4_IsShowPic", req.IsShowPic)
 	setIfNotEmpty(params, "q5_OpenId", req.OpenId)
 	setIfNotEmpty(params, "q6_AuthCode", req.AuthCode)

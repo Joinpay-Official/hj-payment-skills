@@ -1,0 +1,70 @@
+# 多次分账签名规则
+
+本规则仅适用于多次分账 `/allocFunds`，例如：
+
+- `altHandle.manyLaterAllocate`
+- `altHandle.finishAllocate`
+- `altHandle.altManyOrderQuery`
+- `altHandle.altManyTotalQuery`
+
+它不适用于聚合支付 `/tradeRt/*`，也不等同于二级商户 `/altFunds` 的 `sec_key` 协议。
+
+## 公共参数
+
+| 参数 | 说明 | 是否参与签名 |
+|------|------|--------------|
+| `method` | 方法名 | 是 |
+| `version` | 接口版本 | 是 |
+| `data` | 业务 JSON | 是 |
+| `rand_str` | 32 位随机串 | 是 |
+| `sign_type` | `1`=MD5，`21`=RSA | 是 |
+| `mch_no` | 商户号 | 是 |
+| `sign` | 签名值 | 否 |
+
+## 待签名串
+
+1. 排除 `sign`
+2. 参数按 ASCII 字典序排序
+3. 使用 `key=value` 形式拼接，字段间用 `&`
+
+```text
+data=<data JSON>&mch_no=<商户号>&method=<方法名>&rand_str=<随机串>&sign_type=<1或21>&version=<版本>
+```
+
+## MD5 签名
+
+拼接规则：
+
+```text
+待签串&key=商户密钥
+```
+
+然后做 MD5 加密。
+
+## RSA 签名
+
+| 项 | 规则 |
+|----|------|
+| sign_type | `21` |
+| 算法 | `MD5withRSA` |
+| 编码 | UTF-8 |
+| 请求签名私钥 | 商户 RSA 私钥 |
+| 响应/通知验签公钥 | 汇聚平台 RSA 公钥 |
+
+## data 处理建议
+
+文档要求 `data` 参与签名。实现时必须保证：
+
+- 签名时使用的 `data` 和实际发送的 `data` 完全一致
+- 不要在签名后重新格式化 JSON
+- 金额字段统一保留两位小数字符串
+
+## 排错优先级
+
+| 现象 | 优先检查 |
+|------|----------|
+| 验签失败 | `sign_type` 是否与签名实现匹配（`1` 或 `21`） |
+| 验签失败 | 是否按字典序拼 `key=value&key=value` |
+| MD5 失败 | 是否漏掉 `&key=` + 商户密钥 |
+| RSA 失败 | 是否错误使用了 `SHA256withRSA` 等其他算法 |
+| 状态未知 | 先查单笔分账，再查订单所有分账 |

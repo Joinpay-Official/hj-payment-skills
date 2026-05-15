@@ -27,6 +27,14 @@ metadata:
 
 ---
 
+## 适配版本与定位
+
+| 项目 | 内容 |
+|------|------|
+| Skill 版本 | `1.1.0` |
+| 定位 | 聚合支付统一下单 |
+| 适用范围 | `/tradeRt/uniPay` |
+
 ## 前置依赖
 
 | 项目 | 引用 |
@@ -94,7 +102,6 @@ metadata:
 | 参数 | 适用场景 | 说明 |
 |------|---------|------|
 | qa_TradeMerchantNo | 通用（必填） | 报备商户号（在商户后台「报备管理」中获取） |
-| q3_SubMerchantNo | 多子商户模式 | 子商户号 |
 | q4_IsShowPic | WEIXIN_NATIVE | 设为1时返回 rd_Pic(base64图片，⚠️ 可能含换行符裂图，推荐用 rc_Result+前端二维码库） |
 | q5_OpenId | WEIXIN_GZH / WEIXIN_XCX | 用户在当前 AppId 下的唯一标识 |
 | q6_AuthCode | WEIXIN_CARD / ALIPAY_CARD / UNIONPAY_CARD | 用户付款码 |

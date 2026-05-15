@@ -161,7 +161,6 @@ public class JoinPayClient {
         }
         params.put("p9_NotifyUrl", notifyUrl);
         params.put("q1_FrpCode", req.frpCode);
-        if (req.subMerchantNo != null) params.put("q3_SubMerchantNo", req.subMerchantNo);
         if (req.isShowPic != null) params.put("q4_IsShowPic", req.isShowPic);
         if (req.openId != null) params.put("q5_OpenId", req.openId);
         if (req.authCode != null) params.put("q6_AuthCode", req.authCode);
@@ -302,7 +301,6 @@ public class JoinPayClient {
         public String productDesc;        // 商品描述
         public String mp;                // 回传参数
         public String returnUrl;          // 跳转URL
-        public String subMerchantNo;      // 子商户号
         public String isShowPic;          // 是否展示二维码
         public String openId;            // 微信OpenId
         public String authCode;          // 付款码

@@ -113,7 +113,6 @@ public class JoinPayClient {
         if (req.returnUrl != null) params.put("p8_ReturnUrl", req.returnUrl);
         params.put("p9_NotifyUrl", req.notifyUrl != null ? req.notifyUrl : "");
         params.put("q1_FrpCode", req.frpCode);
-        if (req.subMerchantNo != null) params.put("q3_SubMerchantNo", req.subMerchantNo);
         if (req.isShowPic != null) params.put("q4_IsShowPic", req.isShowPic);
         if (req.openId != null) params.put("q5_OpenId", req.openId);
         if (req.authCode != null) params.put("q6_AuthCode", req.authCode);

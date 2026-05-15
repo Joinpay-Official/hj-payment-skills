@@ -35,9 +35,9 @@ quickstart-templates/
 
 | 缓存变量 | 是否必须 | 来源 |
 |---------|---------|------|
-| `__jp_sign_type` | ✅ 必填 | `ask_followup_question` 收集 |
+| `__jp_sign_type` | ✅ 必填 | 结构化选项或普通对话收集 |
 | `__jp_merchant_no` | ✅ 必填 | 对话逐项收集 |
-| `__jp_base_url` | ✅ 必填 | `ask_followup_question` 收集 |
+| `__jp_base_url` | ✅ 必填 | 结构化选项或普通对话收集 |
 | `__jp_notify_url` | ✅ 必填 | 对话逐项收集 |
 | `__jp_merchant_key` | MD5模式必填 | 对话逐项收集 |
 | `__jp_rsa_private_key` | RSA模式必填 | 对话逐项收集 |
@@ -90,7 +90,7 @@ quickstart-templates/
 
 ### 步骤4：写入项目（严格顺序）
 
-按以下顺序使用 `write_to_file` 写入：
+按以下顺序写入项目文件：
 
 #### 第1批：SDK工具类（3个文件）
 

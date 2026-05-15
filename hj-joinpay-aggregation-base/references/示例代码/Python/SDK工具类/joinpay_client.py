@@ -133,7 +133,7 @@ class JoinPayClient:
         # 可选参数
         optional_map = {
             "product_desc": "p6_ProductDesc", "mp": "p7_Mp", "return_url": "p8_ReturnUrl",
-            "sub_merchant_no": "q3_SubMerchantNo", "is_show_pic": "q4_IsShowPic",
+            "is_show_pic": "q4_IsShowPic",
             "open_id": "q5_OpenId", "auth_code": "q6_AuthCode", "app_id": "q7_AppId",
             "terminal_no": "q8_TerminalNo", "transaction_model": "q9_TransactionModel",
             "buyer_id": "qb_buyerId", "terminal_ip": "ql_TerminalIp",

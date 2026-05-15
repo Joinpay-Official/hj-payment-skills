@@ -20,13 +20,13 @@
 
 **消除重复**：
 - 参数收集流程：从 integration/base/order/query/refund 共5处 → 合并为 shared-rules/credential-collection.md 唯一份
-- ask_followup_question JSON 块：从5处 → 1处
+- 结构化选项提问说明：从5处 → 1处
 - 签名约束表(MD5/RSA)：从2处内联 → signing-constraints.md 唯一份
 - 接口地址固定值表(7接口)：从2处 → interface-stability.md 唯一份
 - 参数命名规范禁止推断列表：从2处 → interface-stability.md 唯一份
 
 **解决矛盾指令**（hj-payment-integration）：
-- 统一参数收集方式为「混合模式」：选项用 ask_followup_question + 文本用对话逐项
+- 统一参数收集方式为「混合模式」：选项用结构化提问或普通对话 + 文本用对话逐项
 - 消除"一次性收集"与"逐项收集"的矛盾表述
 - 消除"结构化收集"与"对话收集"的矛盾表述
 

@@ -7,7 +7,7 @@
 
 ## [P0] 接口地址固定值
 
-汇聚支付的接口地址是固定不变的，测试环境和生产环境域名如下：
+聚合支付 `/tradeRt/*` 的接口地址是固定不变的，测试环境和生产环境域名如下：
 
 | 项目 | 测试环境 | 生产环境 |
 |------|---------|---------|
@@ -26,6 +26,56 @@
 | 资金管控订单查询 | `/tradeRt/queryFundsControlOrder` | `https://trade.joinpay.cc/tradeRt/queryFundsControlOrder` |
 
 > 🚫 **禁止行为**：**严禁使用 web_search、web_fetch 等工具搜索汇聚支付官方文档或接口地址**。本文件已包含所有必要信息，无需外部查询。
+
+## [P0] 二级商户 API Gateway 地址
+
+二级商户入网使用 API Gateway JSON 协议，和聚合支付 `/tradeRt/*` 不是同一套接口协议。
+
+| 项目 | 值 |
+|------|----|
+| 生产地址 | `https://api.joinpay.com/altFunds` |
+| 测试地址 | 按接入方环境配置，禁止在 Skill 中硬编码内网地址 |
+| 请求方式 | HTTP POST JSON |
+| 公共参数 | `method/version/data/rand_str/sign_type/mch_no/sign/sec_key` |
+| 签名规则 | [api-gateway-signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/api-gateway-signing-rules.md) |
+
+### 二级商户 method 映射
+
+| 接口名称 | method | 路径 |
+|---------|--------|------|
+| 二级商户添加 | `secondaryMch.create` | `/altFunds` |
+| 二级商户添加（存量） | `secondaryMch.upgrade` | `/altFunds` |
+| 二级商户修改 | `secondaryMch.modify` | `/altFunds` |
+| 二级商户查询 | `secondaryMch.query` | `/altFunds` |
+| 二级商户图片上传 | `secondaryMchPics.uploadPic` | `/altFunds` |
+| 二级商户发起签约 | `secondaryMchSign.create` | `/altFunds` |
+| 二级商户签约撤销 | `secondaryMchSign.revoke` | `/altFunds` |
+| 二级商户签约查询 | `secondaryMchSign.query` | `/altFunds` |
+
+> 🚫 **禁止混用**：二级商户 method 不允许使用 `p0_/q*/hmac` 聚合支付参数；聚合支付接口不允许使用 `method/data/sign/sec_key` 二级商户参数。
+
+## [P0] 多次分账接口地址
+
+多次分账使用独立 JSON 协议，和聚合支付 `/tradeRt/*`、二级商户 `/altFunds` 都不是同一套接口。
+
+| 项目 | 值 |
+|------|----|
+| 生产地址 | `https://www.joinpay.com/allocFunds` |
+| 测试地址 | 按接入方环境配置 |
+| 请求方式 | HTTP POST JSON |
+| 公共参数 | `method/version/data/rand_str/sign_type/mch_no/sign` |
+| 签名规则 | [many-allocate-signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) |
+
+### 多次分账 method 映射
+
+| 接口名称 | method | 路径 |
+|---------|--------|------|
+| 多次分账请求 | `altHandle.manyLaterAllocate` | `/allocFunds` |
+| 完结分账 | `altHandle.finishAllocate` | `/allocFunds` |
+| 查询单笔分账 | `altHandle.altManyOrderQuery` | `/allocFunds` |
+| 查询所有分账 | `altHandle.altManyTotalQuery` | `/allocFunds` |
+
+> 🚫 **禁止混用**：多次分账接口不允许使用 `p0_/q*/hmac` 聚合支付参数；也不要沿用二级商户 `sec_key` 敏感字段加密逻辑，除非该产品线后续文档明确新增。
 
 ---
 
@@ -56,7 +106,7 @@
 | 前缀 | 含义 | 示例 |
 |------|------|------|
 | `p0` ~ `p9` | 通用基础参数 | p0_Version, p1_MerchantNo, p3_Amount, p9_NotifyUrl |
-| `q1` ~ `q9` | 扩展/渠道参数 | q1_FrpCode, q3_SubMerchantNo, q5_OpenId |
+| `q1` ~ `q9` | 扩展/渠道参数 | q1_FrpCode, q5_OpenId, q6_AuthCode |
 | `qa` ~ `qz` | 报备/扩展参数 | qa_TradeMerchantNo（接口必填参数） |
 | `ra` ~ `rz` | 响应基础字段 | ra_Code(状态), rb_CodeMsg(消息), rc_Result(结果) |
 | `hmac` | 签名字段 | 请求和响应均含此字段 |
@@ -67,7 +117,6 @@
 |--------|------|-------------------|
 | `q1_FrpCode` | 支付渠道编码 | 禁止写成 `p6_FrpCode`（错误推断为 p 序列延续） |
 | `qa_TradeMerchantNo` | 报备商户号（必填） | 禁止写成 `p10_TradeMerchantNo` |
-| `q3_SubMerchantNo` | 子商户号 | 禁止写成 `p_SubMerchantNo` |
 
 > **禁止行为**：禁止将 `q1_FrpCode` 改为任何其他名称（如 `p6_FrpCode` / `frpCode` / `frp_code` 等）。所有请求参数名大小写敏感，**不得擅自修改或猜测**。
 

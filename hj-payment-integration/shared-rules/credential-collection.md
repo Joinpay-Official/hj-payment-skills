@@ -22,35 +22,19 @@
 ## 收集方式：混合模式
 
 > **统一交互规范**：
-> - **选项型参数** → 使用 `ask_followup_question` 工具以结构化表单形式一次性收集
+> - **选项型参数** → 优先使用当前 Codex 环境可用的结构化提问能力；没有结构化提问能力时，用普通对话一次性列出选项
 > - **文本输入型参数** → 通过普通对话消息逐项询问（每问一个等回复后再问下一个）
 > - **校验** → 收到每个参数后当场校验，不合格立即让用户修正
 > - 所有校验通过后方可继续后续操作
 
-### 第一步：选项参数（ask_followup_question）
+### 第一步：选项参数（结构化提问或普通对话）
 
-```json
-{
-  "title": "汇聚支付接入 - 基础配置",
-  "questions": [
-    {
-      "id": "sign_type",
-      "question": "请选择签名方式：",
-      "options": ["MD5（简单快捷）", "RSA（安全性更高）"],
-      "multiSelect": false
-    },
-    {
-      "id": "base_url",
-      "question": "请选择接口环境：",
-      "options": [
-        "测试环境 https://trade.joinpay.cc",
-        "生产环境 https://trade.joinpay.com"
-      ],
-      "multiSelect": false
-    }
-  ]
-}
-```
+建议一次性确认：
+
+| 参数 | 选项 |
+|------|------|
+| 签名方式 | `MD5` / `RSA` |
+| 接口环境 | 测试环境 `https://trade.joinpay.cc` / 生产环境 `https://trade.joinpay.com` |
 
 ### 第二步：文本参数（逐项对话）
 

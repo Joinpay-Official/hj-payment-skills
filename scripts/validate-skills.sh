@@ -7,7 +7,11 @@ cd "$REPO_ROOT"
 
 ERRORS=0
 WARNINGS=0
-SKILL_FILES=(*/SKILL.md)
+SKILL_FILES=()
+[ -f SKILL.md ] && SKILL_FILES+=(SKILL.md)
+for f in */SKILL.md; do
+  [ -e "$f" ] && SKILL_FILES+=("$f")
+done
 
 error() { echo "❌ ERROR: $1"; ((ERRORS++)) || true; }
 warn()  { echo "⚠️  WARN:  $1"; ((WARNINGS++)) || true; }
@@ -70,6 +74,7 @@ done < <(find . -name "*.md" -not -path "./.tmp/*" -not -path "./.worktrees/*" |
 echo ""
 echo "--- README 覆盖检查 ---"
 for f in "${SKILL_FILES[@]}"; do
+  [ "$f" = "SKILL.md" ] && continue
   name="${f%/SKILL.md}"
   if grep -q "$name" README.md 2>/dev/null; then
     ok "$name in README"

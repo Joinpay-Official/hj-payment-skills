@@ -1,6 +1,8 @@
 # MD5/RSA 签名与验签规则
 
-汇聚支付支持两种签名方式：**MD5 签名** 和 **RSA 签名**。商户可在汇聚后台选择并配置。
+汇聚支付聚合支付 `/tradeRt/*` 支持两种签名方式：**MD5 签名** 和 **RSA 签名**。商户可在汇聚后台选择并配置。
+
+> 本文件仅适用于聚合支付 `p0_/q*/hmac` 协议。二级商户入网 `/altFunds` 使用 API Gateway JSON 协议，见 [api-gateway-signing-rules.md](api-gateway-signing-rules.md)。
 
 ---
 
