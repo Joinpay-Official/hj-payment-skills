@@ -243,4 +243,3 @@ bash scripts/package-importable-zip.sh
 如需官方技术支持或接入答疑，可通过以下官方渠道联系：
 
 - 汇聚支付官网：https://www.joinpay.com
-- 商户后台：https://mch.joinpay.com
