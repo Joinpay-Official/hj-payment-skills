@@ -1,7 +1,7 @@
 ---
 name: hj-payment-integration
 display_name: 汇聚支付集成
-description: "汇聚支付接入总入口 Skill。用于帮助开发者和 AI 在聚合支付、二级商户入网、多次分账各业务 Skill 与共享协议资料之间做正确路由，先完成场景判断，再进入对应的基础 Skill 和业务 Skill。触发词：汇聚支付接入、JoinPay接入、聚合支付选型、二级商户入网、多次分账。"
+description: "汇聚支付接入总入口 Skill。用于帮助开发者和 AI 在聚合支付、二级商户入网、分账方入网与结算、多次分账各业务 Skill 与共享协议资料之间做正确路由，先完成场景判断，再进入对应的基础 Skill 和业务 Skill。触发词：汇聚支付接入、JoinPay接入、聚合支付选型、二级商户入网、分账方入网、分账方结算、多次分账。"
 version: 1.1.0
 author: "hj-payment-skills"
 homepage: https://www.joinpay.com
@@ -20,7 +20,7 @@ metadata:
 
 这个 Skill 是汇聚支付接入的总入口。它不直接代替各业务 Skill，而是先帮助判断当前应该进入哪条路径，再路由到对应的 Skill。
 
-> **协议边界**：聚合支付 `/tradeRt/*` 使用 `p0_/q*/hmac` 和“只拼 value”签名；二级商户 `/altFunds` 使用 `method/version/data/rand_str/sign_type/mch_no/sign/sec_key`；多次分账 `/allocFunds` 使用 `method/version/data/rand_str/sign_type/mch_no/sign`。三套规则互斥，禁止混用。
+> **协议边界**：聚合支付 `/tradeRt/*` 使用 `p0_/q*/hmac` 和“只拼 value”签名；二级商户 `/altFunds` 使用 `method/version/data/rand_str/sign_type/mch_no/sign/sec_key`；分账方入网与结算、多次分账 `/allocFunds` 使用 `method/version/data/rand_str/sign_type/mch_no/sign`。协议族规则互斥，禁止混用。
 
 ---
 
@@ -40,7 +40,8 @@ metadata:
 | 协议族索引 | 产品线、接口路径、签名字段和协议规则路由 | [protocol-index.md](../hj-joinpay-pay-shared-base/protocol/protocol-index.md) |
 | 聚合支付签名硬约束 | `/tradeRt/*` 的 MD5/RSA 签名规范、代码实现、错误排查 | [shared-rules/signing-constraints.md](shared-rules/signing-constraints.md) |
 | API Gateway 签名硬约束 | `/altFunds` 的 `sign/sec_key/data` 签名与加密规则 | [api-gateway-signing-rules.md](../hj-joinpay-pay-shared-base/protocol/api-gateway-signing-rules.md) |
-| 多次分账签名硬约束 | `/allocFunds` 的 `sign_type/sign/data` 签名规则 | [many-allocate-signing-rules.md](../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) |
+| 分账方入网与结算签名硬约束 | `/allocFunds` 的 `altmch.*`、`altMchPics.*`、`altMchSign.*`、`altSettle.*` 签名规则 | [签名规则.md](../hj-joinpay-alt-mch-settlement/references/签名规则.md) |
+| 多次分账签名硬约束 | `/allocFunds` 的 `altHandle.*` 签名规则 | [many-allocate-signing-rules.md](../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) |
 | 接口稳定性 | 接口地址、参数固定值、命名规范 | [shared-rules/interface-stability.md](shared-rules/interface-stability.md) |
 | 新产品线模板 | 新增产品线和协议族的必做清单 | [new-product-line-template.md](shared-rules/new-product-line-template.md) |
 
@@ -115,6 +116,7 @@ metadata:
 | 定位 | 总入口 / 总导航 / 场景分诊 |
 | 适用范围 | 聚合支付、共享协议资料导航 |
 | 二级商户范围 | 二级商户入网、图片、签约、进件状态导航 |
+| 分账方范围 | 分账方添加、修改、查询、图片、签约、手工结算、自动结算查询、账户余额查询 |
 | 多次分账范围 | 分账请求、完结分账、单笔查询、全部查询导航 |
 | 不承担 | 具体字段表、语言 SDK 代码细节、单接口完整说明 |
 
@@ -134,6 +136,7 @@ metadata:
                         +-- 查询 / 关单 / 资金查询 --> aggregation-query
                         +-- 退款 --> aggregation-refund
                 +-- 二级商户入网 / 图片 / 签约 --> secondary-mch
+                +-- 分账方入网 / 图片 / 签约 / 结算 --> alt-mch-settlement
                 +-- 多次分账 / 完结分账 / 分账查询 --> many-allocate
 ```
 
@@ -148,6 +151,7 @@ metadata:
 | 查询订单或关单 | [aggregation-query](../hj-joinpay-aggregation-query/) | 结合原订单链路 |
 | 退款 | [aggregation-refund](../hj-joinpay-aggregation-refund/) | 结合原订单链路 |
 | 二级商户入网、存量升级、图片上传、签约 | [secondary-mch](../hj-joinpay-secondary-mch/) | 使用 API Gateway JSON 签名与加密规则 |
+| 分账方入网、分账方图片、协议签约、结算、账户查询 | [alt-mch-settlement](../hj-joinpay-alt-mch-settlement/) | 使用 `/allocFunds` 分账方签名规则 |
 | 多次分账、完结分账、查询分账 | [many-allocate](../hj-joinpay-many-allocate/) | 使用 `/allocFunds` 多次分账签名规则 |
 
 ## 与子 Skill 的关系
@@ -161,6 +165,7 @@ hj-payment-integration          (current: 总入口、路由、共享规则)
 ├── hj-joinpay-aggregation-query/   (查询 / 关单 / 资金查询)
 ├── hj-joinpay-aggregation-refund/  (退款 / 退款查询 / 退款信息查询)
 ├── hj-joinpay-secondary-mch/       (二级商户入网 / 图片 / 签约)
+├── hj-joinpay-alt-mch-settlement/  (分账方入网 / 图片 / 签约 / 结算)
 └── hj-joinpay-many-allocate/       (多次分账 / 完结分账 / 分账查询)
 ```
 
@@ -176,7 +181,9 @@ hj-payment-integration          (current: 总入口、路由、共享规则)
 | **能力5：问题排查** | A+B | 响应码/FAQ/排障 → [order/references/排障手册.md](../hj-joinpay-aggregation-order/references/排障手册.md) |
 | **能力6：二级商户入网** | B | 新增/存量升级/图片/签约 → [secondary-mch](../hj-joinpay-secondary-mch/) |
 | **能力7：二级商户示例代码** | B | Java/PHP/Python/Go 二级商户入网示例 → [secondary-mch/references/示例代码/接口索引.md](../hj-joinpay-secondary-mch/references/示例代码/接口索引.md) |
-| **能力8：多次分账** | B | 分账请求/完结/查询/金额规则 → [many-allocate](../hj-joinpay-many-allocate/) |
+| **能力8：分账方入网与结算** | B | 分账方添加/图片/签约/结算/账户查询 → [alt-mch-settlement](../hj-joinpay-alt-mch-settlement/) |
+| **能力9：分账方示例代码** | B | Java/PHP/Python/Go 分账方入网与结算示例 → [alt-mch-settlement/references/示例代码/接口索引.md](../hj-joinpay-alt-mch-settlement/references/示例代码/接口索引.md) |
+| **能力10：多次分账** | B | 分账请求/完结/查询/金额规则 → [many-allocate](../hj-joinpay-many-allocate/) |
 
 ---
 

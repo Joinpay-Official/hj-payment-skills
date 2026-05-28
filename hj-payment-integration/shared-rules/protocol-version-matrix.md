@@ -8,6 +8,7 @@
 |--------|------|----------|----------|--------|----------|
 | 聚合支付 | `/tradeRt/*` | `application/x-www-form-urlencoded` | `hmac` | 排除 `hmac`，按 key 排序后只拼 value | [signing-constraints.md](signing-constraints.md) |
 | 二级商户入网 | `/altFunds` | JSON body，`data` 为 JSON 字符串 | `sign`，敏感字段配合 `sec_key` | 排除 `sign/sec_key`，按 key 排序拼 `key=value&key=value` | [api-gateway-signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/api-gateway-signing-rules.md) |
+| 分账方入网与结算 | `/allocFunds` | JSON body | `sign` | 排除 `sign`/`aes_key`，按 key 排序拼 `key=value&key=value` | [签名规则.md](../../hj-joinpay-alt-mch-settlement/references/签名规则.md) |
 | 多次分账 | `/allocFunds` | JSON body | `sign` | 排除 `sign`，按 key 排序拼 `key=value&key=value` | [many-allocate-signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) |
 
 ## 聚合支付接口版本
@@ -44,12 +45,32 @@
 | `altHandle.altManyOrderQuery` | `/allocFunds` | `1.1` | 查询单笔分账 |
 | `altHandle.altManyTotalQuery` | `/allocFunds` | `1.1` | 查询订单维度全部分账和剩余金额 |
 
+## 分账方入网与结算 method
+
+| method | 路径 | `version` | 说明 |
+|--------|------|-----------|------|
+| `altmch.create` | `/allocFunds` | `1.1` | 添加分账方并触发打款认证；V1.4.2 无 AES 加密 |
+| `altmch.modify` | `/allocFunds` | 以接入文档为准 | 修改分账方资料 |
+| `altmch.query` | `/allocFunds` | 以接入文档为准 | 查询分账方信息和状态 |
+| `altMchPics.uploadPic` | `/allocFunds` | 以接入文档为准 | 上传分账方资质图片 |
+| `altMchPics.modifyPic` | `/allocFunds` | 以接入文档为准 | 修改分账方资质图片 |
+| `altMchPics.queryPicsInfo` | `/allocFunds` | 以接入文档为准 | 查询分账方图片信息 |
+| `altMchSign.querySignContent` | `/allocFunds` | 以接入文档为准 | 获取内容签约协议 |
+| `altMchSign.sign` | `/allocFunds` | 以接入文档为准 | 提交内容签约 |
+| `altMchSign.getSignUrl` | `/allocFunds` | 以接入文档为准 | 获取页面签约 URL |
+| `altMchSign.querySignRecord` | `/allocFunds` | 以接入文档为准 | 查询分账方签约状态 |
+| `altSettle.launch` | `/allocFunds` | `1.1` | 发起手工结算 |
+| `altSettle.get` | `/allocFunds` | `1.1` | 查询手工结算结果 |
+| `altSettle.getAutoSettle` | `/allocFunds` | `1.1` | 查询自动结算记录 |
+| `altAccount.get` | `/allocFunds` | `1.1` | 查询分账方账户余额 |
+
 ## 环境地址
 
 | 产品线 | 测试环境 | 生产环境 |
 |--------|----------|----------|
 | 聚合支付 | `https://trade.joinpay.cc` | `https://trade.joinpay.com` |
 | 二级商户入网 | 按接入方配置，不在 skill 中硬编码内网地址 | `https://api.joinpay.com/altFunds` |
+| 分账方入网与结算 | 按接入方配置 | `https://www.joinpay.com/allocFunds` |
 | 多次分账 | 按接入方配置 | `https://www.joinpay.com/allocFunds` |
 
 ## 固定值与禁区
@@ -61,4 +82,5 @@
 | 二级商户 `data` | 必须用最终上送的紧凑 JSON 原文参与签名，签名后不得重新格式化 |
 | 二级商户 `sec_key` | 用平台公钥加密 AES key，`sign/sec_key` 不参与签名 |
 | 多次分账 `sign_type` | `1`=MD5，`21`=RSA，不要沿用二级商户 `2` |
+| 分账方入网与结算 `sign_type` | V1.4.2：`1`=MD5，`21`=RSA，RSA 算法为 `MD5withRSA`；`altmch.create` 无 AES 加密 |
 | 协议混用 | `/tradeRt/*` 禁止使用 `method/data/sign/sec_key`；`/altFunds` 禁止使用 `p0_/q*/hmac`；`/allocFunds` 禁止沿用二级商户 `sec_key` 规则 |

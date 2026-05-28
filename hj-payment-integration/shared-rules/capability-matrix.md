@@ -8,6 +8,7 @@
 |--------|----------|-------------------|--------------|----------|--------------|----------|
 | 聚合支付 | 下单、查询、关单、退款、退款查询、退款信息查询、资金查询 | `/tradeRt/uniPay`、`/tradeRt/queryOrder`、`/tradeRt/closeOrder`、`/tradeRt/refund`、`/tradeRt/queryRefund`、`/tradeRt/queryRefundInfo`、`/tradeRt/queryFundsControlOrder` | 微信、支付宝、银联 | Java/Python/Go/PHP，见 [聚合支付示例索引](../../hj-joinpay-aggregation-base/references/示例代码/接口索引.md) | Spring Boot 聚合支付模板 | `p0_/q*/hmac`，按 key 排序后只拼 value |
 | 二级商户入网 | 新增、存量升级、修改、查询、图片上传、签约、撤销签约、签约查询 | `/altFunds` + `secondaryMch.create`、`secondaryMch.upgrade`、`secondaryMch.modify`、`secondaryMch.query`、`secondaryMchPics.uploadPic`、`secondaryMchSign.*` | API Gateway JSON method 分发 | Java/PHP/Python/Go，见 [二级商户示例索引](../../hj-joinpay-secondary-mch/references/示例代码/接口索引.md) | 暂无工程模板，提供协议示例 | `method/version/data/rand_str/sign_type/mch_no/sign/sec_key` |
+| 分账方入网与结算 | 分账方添加、修改、查询、图片上传、协议签约、手工结算、结算查询、账户余额查询 | `/allocFunds` + `altmch.create`、`altmch.modify`、`altmch.query`、`altMchPics.*`、`altMchSign.*`、`altSettle.*`、`altAccount.get` | 分账方 JSON method 分发 | Java/Python/Go/PHP，见 [分账方示例索引](../../hj-joinpay-alt-mch-settlement/references/示例代码/接口索引.md)，覆盖 MD5/RSA 签名 | 暂无工程模板 | `method/version/data/rand_str/sign_type/mch_no/sign` |
 | 多次分账 | 分账请求、完结分账、单笔查询、全部查询 | `/allocFunds` + `altHandle.manyLaterAllocate`、`altHandle.finishAllocate`、`altHandle.altManyOrderQuery`、`altHandle.altManyTotalQuery` | 多次分账 JSON method 分发 | 当前提供文档和规则说明，见 [多次分账 Skill](../../hj-joinpay-many-allocate/SKILL.md) | 暂无工程模板 | `method/version/data/rand_str/sign_type/mch_no/sign` |
 
 ## 聚合支付渠道
@@ -27,5 +28,6 @@
 | 支持哪些支付渠道、接口和版本 | 本文 + [协议版本矩阵](protocol-version-matrix.md) |
 | 接入微信/支付宝/银联支付 | [聚合支付基础 Skill](../../hj-joinpay-aggregation-base/SKILL.md) |
 | 接入二级商户入网或签约 | [二级商户 Skill](../../hj-joinpay-secondary-mch/SKILL.md) |
+| 接入分账方入网、签约或结算 | [分账方入网与结算 Skill](../../hj-joinpay-alt-mch-settlement/SKILL.md) |
 | 接入多次分账或完结分账 | [多次分账 Skill](../../hj-joinpay-many-allocate/SKILL.md) |
 | 需要直接写 Spring Boot 支付代码 | [快速接入模板指南](../../hj-joinpay-aggregation-base/references/quickstart-templates/README.md) |

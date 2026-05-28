@@ -1,7 +1,7 @@
 ---
 name: hj-payment-skills
 display_name: 汇聚支付技能包
-description: "汇聚支付（JoinPay）完整接入技能包总入口。用于在单个 Skill 导入环境中承载聚合支付、二级商户入网、多次分账、共享签名协议、异步通知、示例代码和接入治理资料。触发词：汇聚支付接入、JoinPay接入、聚合支付、二级商户入网、多次分账、secondaryMch、altHandle。"
+description: "汇聚支付（JoinPay）完整接入技能包总入口。用于在单个 Skill 导入环境中承载聚合支付、二级商户入网、分账方入网与结算、多次分账、共享签名协议、异步通知、示例代码和接入治理资料。触发词：汇聚支付接入、JoinPay接入、聚合支付、二级商户入网、分账方入网、分账方结算、多次分账、secondaryMch、altmch、altSettle、altHandle。"
 version: 1.1.0
 author: "hj-payment-skills"
 homepage: https://www.joinpay.com
@@ -26,20 +26,21 @@ metadata:
 |------|------|
 | Skill 版本 | `1.1.0` |
 | 定位 | 汇聚支付整包入口 / 产品线分诊 / 子 Skill 导航 |
-| 适用范围 | 聚合支付、二级商户入网、多次分账、共享协议、示例代码、接入治理 |
+| 适用范围 | 聚合支付、二级商户入网、分账方入网与结算、多次分账、共享协议、示例代码、接入治理 |
 | 不承担 | 真实商户资料、密钥托管、生产配置变更 |
 
 ## 协议边界
 
-聚合支付和二级商户入网是两套互斥协议：
+聚合支付、二级商户入网、分账方入网与结算、多次分账属于不同协议或 method 族：
 
 | 产品线 | 接口路径 | 签名/加密规则 | 入口 |
 |--------|----------|---------------|------|
 | 聚合支付 | `/tradeRt/*` | `p0_/q*/hmac`，按 key 排序后只拼 value | [hj-payment-integration/SKILL.md](hj-payment-integration/SKILL.md) |
 | 二级商户入网 | `/altFunds` | `method/version/data/rand_str/sign_type/mch_no/sign/sec_key`，`key=value&key=value` | [hj-joinpay-secondary-mch/SKILL.md](hj-joinpay-secondary-mch/SKILL.md) |
+| 分账方入网与结算 | `/allocFunds` | `method/version/data/rand_str/sign_type/mch_no/sign`，`key=value&key=value` | [hj-joinpay-alt-mch-settlement/SKILL.md](hj-joinpay-alt-mch-settlement/SKILL.md) |
 | 多次分账 | `/allocFunds` | `method/version/data/rand_str/sign_type/mch_no/sign`，`key=value&key=value` | [hj-joinpay-many-allocate/SKILL.md](hj-joinpay-many-allocate/SKILL.md) |
 
-不要把聚合支付的 `hmac` 规则用于二级商户，也不要把二级商户的 `sign/sec_key/data` 规则用于聚合支付。
+不要把聚合支付的 `hmac` 规则用于 JSON method 接口，也不要把二级商户的 `sign/sec_key/data` 规则用于 `/allocFunds`。
 
 ## 阅读顺序
 
@@ -55,6 +56,7 @@ metadata:
 | 聚合支付查询、关单、资金查询 | [hj-joinpay-aggregation-query/SKILL.md](hj-joinpay-aggregation-query/SKILL.md) |
 | 聚合支付退款 | [hj-joinpay-aggregation-refund/SKILL.md](hj-joinpay-aggregation-refund/SKILL.md) |
 | 二级商户入网、图片、签约 | [hj-joinpay-secondary-mch/SKILL.md](hj-joinpay-secondary-mch/SKILL.md) |
+| 分账方入网、图片、签约、结算、账户查询 | [hj-joinpay-alt-mch-settlement/SKILL.md](hj-joinpay-alt-mch-settlement/SKILL.md) |
 | 多次分账、完结分账、分账查询 | [hj-joinpay-many-allocate/SKILL.md](hj-joinpay-many-allocate/SKILL.md) |
 | 共享签名、通知、运行时矩阵 | [hj-joinpay-pay-shared-base/SKILL.md](hj-joinpay-pay-shared-base/SKILL.md) |
 
@@ -80,6 +82,7 @@ hj-payment-skills/
 ├── hj-joinpay-aggregation-query/
 ├── hj-joinpay-aggregation-refund/
 ├── hj-joinpay-secondary-mch/
+├── hj-joinpay-alt-mch-settlement/
 └── hj-joinpay-many-allocate/
 ```
 
