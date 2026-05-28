@@ -20,7 +20,7 @@ compatibility:
 |------|------|
 | Skill 版本 | `1.1.0` |
 | 定位 | 共享协议层 / 运行时矩阵 / 治理入口 |
-| 适用范围 | 聚合支付共享资料、API Gateway JSON 共享资料、多次分账共享资料 |
+| 适用范围 | 聚合支付共享资料、API Gateway JSON 共享资料、分账方/延迟分账/多次分账 `/allocFunds` 共享资料 |
 
 ## 共享规则补充
 
@@ -41,7 +41,7 @@ compatibility:
 | 判断产品线应该使用哪套协议 | [protocol/protocol-index.md](protocol/protocol-index.md) |
 | MD5/RSA 签名规则 | [protocol/signing-rules.md](protocol/signing-rules.md) |
 | API Gateway JSON 签名与敏感字段加密 | [protocol/api-gateway-signing-rules.md](protocol/api-gateway-signing-rules.md) |
-| 多次分账 `/allocFunds` 签名规则 | [protocol/many-allocate-signing-rules.md](protocol/many-allocate-signing-rules.md) |
+| 延迟分账/多次分账 `/allocFunds` 签名规则 | [protocol/many-allocate-signing-rules.md](protocol/many-allocate-signing-rules.md) |
 | 异步通知规则 | [protocol/async-notify.md](protocol/async-notify.md) |
 | 服务端多语言 SDK 入口 | [runtime/server-sdk-matrix.md](runtime/server-sdk-matrix.md) |
 | 发布前检查 | [governance/release-checklist.md](governance/release-checklist.md) |
@@ -61,7 +61,7 @@ compatibility:
 - `protocol-index.md` — 产品线、接口路径和协议规则的路由索引
 - `signing-rules.md` — 聚合支付 `/tradeRt/*` 的 MD5/RSA 双签名和验签规则（语言无关）
 - `api-gateway-signing-rules.md` — 二级商户等 API Gateway JSON 协议的 `sign/sec_key/data` 规则
-- `many-allocate-signing-rules.md` — 多次分账 `/allocFunds` 的 `sign_type/sign/data` 规则
+- `many-allocate-signing-rules.md` — 延迟分账/多次分账 `/allocFunds` 的 `sign_type/sign/data` 规则
 - `async-notify.md` — 异步通知、幂等、应答格式和回调限制
 
 ### `runtime/`

@@ -1,13 +1,13 @@
 # 汇聚支付 Skill 产品包
 
-这是一个面向第三方客户的汇聚支付（JoinPay）接入 Skill 包，用来帮助开发者借助 AI 工具完成聚合支付 API、二级商户入网 API、分账方入网与结算 API 和多次分账 API 接入开发。
+这是一个面向第三方客户的汇聚支付（JoinPay）接入 Skill 包，用来帮助开发者借助 AI 工具完成聚合支付 API、二级商户入网 API、分账方入网与结算 API、延迟分账 API 和多次分账 API 接入开发。
 
 README 按 **产品线 → 开发任务 → 技术栈** 导航，先帮你定位入口，再进入对应 Skill。
 
 - 服务端 Skill：Java、Python、Go、PHP
-- 产品能力主线：聚合支付（统一支付下单、订单查询、退款、关单、资金查询）、二级商户入网（新增、存量升级、图片、签约）、分账方入网与结算（分账方添加、图片、签约、结算、账户查询）、多次分账（分账请求、完结分账、单笔查询、全部查询）
+- 产品能力主线：聚合支付（统一支付下单、订单查询、退款、关单、资金查询）、二级商户入网（新增、存量升级、图片、签约）、分账方入网与结算（分账方添加、图片、签约、结算、账户查询）、延迟分账/多次分账（单次延迟分账、延迟分账查询、多次分账、完结分账、单笔查询、全部查询）
 
-> 汇聚支付聚合支付 API 支持微信、支付宝、银联三大主流支付渠道，采用 `hmac` 签名；二级商户入网 API 使用 API Gateway JSON 协议和 `sign/sec_key`；分账方入网与结算 API 使用 `/allocFunds` + `altmch.*`、`altMchPics.*`、`altMchSign.*`、`altSettle.*`；多次分账 API 使用 `/allocFunds` + `altHandle.*`。协议边界禁止混用。
+> 汇聚支付聚合支付 API 支持微信、支付宝、银联三大主流支付渠道，采用 `hmac` 签名；二级商户入网 API 使用 API Gateway JSON 协议和 `sign/sec_key`；分账方入网与结算 API 使用 `/allocFunds` + `altmch.*`、`altMchPics.*`、`altMchSign.*`、`altSettle.*`；延迟分账/多次分账 API 使用 `/allocFunds` + `altHandle.*`。协议边界禁止混用。
 
 ## 如何开始
 
@@ -43,7 +43,7 @@ bash scripts/package-importable-zip.sh
 | 聚合支付 | 标准支付场景，微信/支付宝/银联全渠道 | [hj-joinpay-aggregation-base](hj-joinpay-aggregation-base/) |
 | 二级商户入网 | 平台二级商户新增、存量升级、图片上传、签约和状态查询 | [hj-joinpay-secondary-mch](hj-joinpay-secondary-mch/) |
 | 分账方入网与结算 | 分账方添加、图片上传、协议签约、手工结算、账户查询 | [hj-joinpay-alt-mch-settlement](hj-joinpay-alt-mch-settlement/) |
-| 多次分账 | 延迟分账、完结分账、单笔查询、全部查询 | [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) |
+| 延迟分账/多次分账 | 单次延迟分账、延迟分账查询、多次分账、完结分账、单笔查询、全部查询 | [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) |
 
 ### 2. 再按开发任务进入
 
@@ -55,7 +55,7 @@ bash scripts/package-importable-zip.sh
 | 退款申请 / 退款查询 | [hj-joinpay-aggregation-refund](hj-joinpay-aggregation-refund/) |
 | 二级商户入网 / 图片 / 签约 | [hj-joinpay-secondary-mch](hj-joinpay-secondary-mch/) |
 | 分账方入网 / 图片 / 签约 / 结算 | [hj-joinpay-alt-mch-settlement](hj-joinpay-alt-mch-settlement/) |
-| 多次分账 / 完结分账 / 分账查询 | [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) |
+| 延迟分账 / 多次分账 / 完结分账 / 分账查询 | [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) |
 
 ### 3. 最后按产品线和技术栈落地
 
@@ -67,7 +67,7 @@ bash scripts/package-importable-zip.sh
 | 二级商户入网 | Python | [secondary_mch_create_example.py](hj-joinpay-secondary-mch/references/示例代码/Python/secondary_mch_create_example.py) | `cryptography` + `requests` 实现 |
 | 二级商户入网 | Go | [secondary_mch_create_example.go](hj-joinpay-secondary-mch/references/示例代码/Go/secondary_mch_create_example.go) | Go 标准库实现 |
 | 分账方入网与结算 | Java/Python/Go/PHP | [分账方示例索引](hj-joinpay-alt-mch-settlement/references/示例代码/接口索引.md) | `/allocFunds` MD5/RSA 签名、分账方添加、手工结算、账户查询示例 |
-| 多次分账 | 文档规则 | [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) | 当前提供接口文档、金额规则、状态与排障说明 |
+| 延迟分账/多次分账 | Java/Python/Go/PHP | [延迟分账与多次分账示例索引](hj-joinpay-many-allocate/references/示例代码/接口索引.md) | `/allocFunds` MD5/RSA 签名，覆盖 `singleLaterAllocate`、`allocateQuery` 和多次分账接口 |
 
 ## 产品线说明
 
@@ -104,15 +104,18 @@ bash scripts/package-importable-zip.sh
 4. [hj-joinpay-alt-mch-settlement/references/结算与账户查询.md](hj-joinpay-alt-mch-settlement/references/结算与账户查询.md)
 5. [hj-joinpay-alt-mch-settlement/references/示例代码/接口索引.md](hj-joinpay-alt-mch-settlement/references/示例代码/接口索引.md)（需要代码示例时）
 
-### 多次分账
+### 延迟分账/多次分账
 
-多次分账使用独立的 `/allocFunds` JSON 协议，覆盖多次分账请求、完结分账、单笔查询、全部查询。
+延迟分账/多次分账使用独立的 `/allocFunds` JSON 协议，覆盖单次延迟分账、延迟分账查询、多次分账请求、完结分账、单笔查询、全部查询。
 
 推荐阅读顺序：
 
 1. [hj-joinpay-many-allocate](hj-joinpay-many-allocate/)
 2. [hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md](hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md)
-3. [hj-joinpay-many-allocate/references/金额规则与分账模式.md](hj-joinpay-many-allocate/references/金额规则与分账模式.md)
+3. [hj-joinpay-many-allocate/references/接口总览.md](hj-joinpay-many-allocate/references/接口总览.md)
+4. [hj-joinpay-many-allocate/references/延迟分账操作指南.md](hj-joinpay-many-allocate/references/延迟分账操作指南.md)（单次延迟分账时）
+5. [hj-joinpay-many-allocate/references/金额规则与分账模式.md](hj-joinpay-many-allocate/references/金额规则与分账模式.md)（多次分账时）
+6. [hj-joinpay-many-allocate/references/示例代码/接口索引.md](hj-joinpay-many-allocate/references/示例代码/接口索引.md)（需要代码示例时）
 
 ## 共享资料层
 
@@ -128,7 +131,7 @@ bash scripts/package-importable-zip.sh
 | [hj-joinpay-pay-shared-base/protocol/signing-rules.md](hj-joinpay-pay-shared-base/protocol/signing-rules.md) | MD5/RSA 双签名规则 |
 | [hj-joinpay-pay-shared-base/protocol/api-gateway-signing-rules.md](hj-joinpay-pay-shared-base/protocol/api-gateway-signing-rules.md) | API Gateway JSON 签名与敏感字段加密规则 |
 | [hj-joinpay-alt-mch-settlement/references/签名规则.md](hj-joinpay-alt-mch-settlement/references/签名规则.md) | 分账方入网与结算 `/allocFunds` 签名规则 |
-| [hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md](hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) | 多次分账 `/allocFunds` 签名规则 |
+| [hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md](hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) | 延迟分账/多次分账 `/allocFunds` 签名规则 |
 | [hj-joinpay-pay-shared-base/protocol/async-notify.md](hj-joinpay-pay-shared-base/protocol/async-notify.md) | 异步通知规则 |
 | [hj-joinpay-pay-shared-base/runtime/server-sdk-matrix.md](hj-joinpay-pay-shared-base/runtime/server-sdk-matrix.md) | 服务端多语言矩阵 |
 | [hj-joinpay-pay-shared-base/governance/versioning-policy.md](hj-joinpay-pay-shared-base/governance/versioning-policy.md) | 版本治理规则 |
@@ -165,7 +168,7 @@ bash scripts/package-importable-zip.sh
 |-------|------|---------|
 | [hj-joinpay-secondary-mch](hj-joinpay-secondary-mch/) | 二级商户新增、存量升级、修改、查询、图片上传、签约 | hj-joinpay-pay-shared-base |
 | [hj-joinpay-alt-mch-settlement](hj-joinpay-alt-mch-settlement/) | 分账方添加、修改、查询、图片上传、协议签约、结算、账户查询，含 Java/Python/Go/PHP 示例 | hj-joinpay-pay-shared-base |
-| [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) | 多次分账请求、完结分账、单笔查询、全部查询 | hj-joinpay-pay-shared-base |
+| [hj-joinpay-many-allocate](hj-joinpay-many-allocate/) | 单次延迟分账、延迟分账查询、多次分账请求、完结分账、单笔查询、全部查询，含 Java/Python/Go/PHP 示例 | hj-joinpay-pay-shared-base |
 
 ## 目录结构
 
@@ -220,14 +223,14 @@ bash scripts/package-importable-zip.sh
 ③ 接口总览 / 入网到可结算流程 / 结算与账户查询 / 状态与通知
 ```
 
-### 多次分账
+### 延迟分账/多次分账
 
 ```text
 ① hj-joinpay-many-allocate
        ↓
 ② many-allocate-signing-rules
        ↓
-③ 接口总览 / 金额规则与分账模式 / 状态与通知
+③ 接口总览 / 延迟分账操作指南 / 金额规则与分账模式 / 状态与通知 / 示例代码索引
 ```
 
 ## 文档说明

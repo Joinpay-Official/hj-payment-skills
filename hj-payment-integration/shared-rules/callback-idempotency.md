@@ -25,7 +25,7 @@
 | 二级商户申请单通知 | `mch_order_no/trx_no/status` | 同一状态重复通知直接返回成功；终态不得被旧状态覆盖 |
 | 二级商户签约通知 | `mch_order_no/trx_no/status` 或签约单号 + 状态 | 签约成功、撤销成功等终态按状态机处理 |
 | 分账方入网与结算通知 | 分账方通知用 `alt_mch_no/login_name + 状态`；结算通知用 `mch_order_no + order_status` | 认证、签约、结算成功不得被旧状态覆盖；图片审核通过通常无通知 |
-| 多次分账通知 | `alt_order_no` + `alt_main_status` | 已成功的分账单不得被旧通知覆盖；同步未知场景先查询单笔或全部分账 |
+| 延迟分账/多次分账通知 | `alt_order_no` + `alt_main_status` | 已成功的分账单不得被旧通知覆盖；延迟分账同步未知先用 `allocateQuery` 查， 多次分账先查询单笔或全部分账 |
 
 ## 响应规则
 
@@ -76,15 +76,15 @@
 
 分账方状态说明见 [状态与通知](../../hj-joinpay-alt-mch-settlement/references/状态与通知.md)。
 
-## 多次分账回调
+## 延迟分账/多次分账回调
 
 | 要点 | 规则 |
 |------|------|
-| 验签 | 使用多次分账 `/allocFunds` 规则，排除 `sign`，按 key 排序拼 `key=value` |
+| 验签 | 使用延迟分账/多次分账 `/allocFunds` 规则，排除 `sign` 和可能存在的 `aes_key`，按 key 排序拼 `key=value` |
 | 主状态 | 同步受理成功后常见 `P0001`；异步成功常见 `P1000` |
 | 明细状态 | `alt_info` 中 `100`=成功、`101`=失败、`102`=已创建 |
 | 幂等 | 按 `alt_order_no + alt_main_status` 去重；已成功终态不得被旧状态覆盖 |
-| 查询 | 同步超时、`A3000`、回调未达时，先查单笔分账，再查订单全部分账 |
+| 查询 | 延迟分账同步超时、`A3000`、回调未达时，用 `altHandle.allocateQuery` 按 `alt_order_no` 查；多次分账先查单笔分账，再查订单全部分账 |
 | 应答 | 本地可靠落库后再返回文档要求的成功确认格式 |
 
-多次分账状态说明见 [状态与通知](../../hj-joinpay-many-allocate/references/状态与通知.md)。
+延迟分账/多次分账状态说明见 [状态与通知](../../hj-joinpay-many-allocate/references/状态与通知.md)。

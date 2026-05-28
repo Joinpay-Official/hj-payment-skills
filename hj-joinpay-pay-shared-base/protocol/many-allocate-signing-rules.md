@@ -1,7 +1,9 @@
-# 多次分账签名规则
+# 延迟分账与多次分账签名规则
 
-本规则仅适用于多次分账 `/allocFunds`，例如：
+本规则仅适用于延迟分账与多次分账 `/allocFunds`，例如：
 
+- `altHandle.singleLaterAllocate`
+- `altHandle.allocateQuery`
 - `altHandle.manyLaterAllocate`
 - `altHandle.finishAllocate`
 - `altHandle.altManyOrderQuery`
@@ -67,4 +69,4 @@ data=<data JSON>&mch_no=<商户号>&method=<方法名>&rand_str=<随机串>&sign
 | 验签失败 | 是否按字典序拼 `key=value&key=value` |
 | MD5 失败 | 是否漏掉 `&key=` + 商户密钥 |
 | RSA 失败 | 是否错误使用了 `SHA256withRSA` 等其他算法 |
-| 状态未知 | 先查单笔分账，再查订单所有分账 |
+| 状态未知 | 单次延迟分账先用 `altHandle.allocateQuery` 查分账订单；多次分账先查单笔分账，再查订单所有分账 |

@@ -54,9 +54,9 @@
 
 > 🚫 **禁止混用**：二级商户 method 不允许使用 `p0_/q*/hmac` 聚合支付参数；聚合支付接口不允许使用 `method/data/sign/sec_key` 二级商户参数。
 
-## [P0] 多次分账接口地址
+## [P0] 延迟分账/多次分账接口地址
 
-多次分账使用独立 JSON 协议，和聚合支付 `/tradeRt/*`、二级商户 `/altFunds` 都不是同一套接口。
+延迟分账和多次分账使用独立 JSON 协议，和聚合支付 `/tradeRt/*`、二级商户 `/altFunds` 都不是同一套接口。
 
 | 项目 | 值 |
 |------|----|
@@ -66,16 +66,18 @@
 | 公共参数 | `method/version/data/rand_str/sign_type/mch_no/sign` |
 | 签名规则 | [many-allocate-signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) |
 
-### 多次分账 method 映射
+### 延迟分账/多次分账 method 映射
 
 | 接口名称 | method | 路径 |
 |---------|--------|------|
+| 延迟分账请求 | `altHandle.singleLaterAllocate` | `/allocFunds` |
+| 延迟分账查询 | `altHandle.allocateQuery` | `/allocFunds` |
 | 多次分账请求 | `altHandle.manyLaterAllocate` | `/allocFunds` |
 | 完结分账 | `altHandle.finishAllocate` | `/allocFunds` |
 | 查询单笔分账 | `altHandle.altManyOrderQuery` | `/allocFunds` |
 | 查询所有分账 | `altHandle.altManyTotalQuery` | `/allocFunds` |
 
-> 🚫 **禁止混用**：多次分账接口不允许使用 `p0_/q*/hmac` 聚合支付参数；也不要沿用二级商户 `sec_key` 敏感字段加密逻辑，除非该产品线后续文档明确新增。
+> 🚫 **禁止混用**：延迟分账和多次分账接口不允许使用 `p0_/q*/hmac` 聚合支付参数；也不要沿用二级商户 `sec_key` 敏感字段加密逻辑，除非该产品线后续文档明确新增。
 
 ---
 

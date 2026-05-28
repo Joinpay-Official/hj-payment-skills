@@ -44,7 +44,7 @@
 
 > 🔴 **严禁自行实现签名算法！** 必须从下方复制代码并按注释修改。
 >
-> 多语言版本见：[signing-rules.md](../hj-joinpay-pay-shared-base/protocol/signing-rules.md)
+> 多语言版本见：[signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/signing-rules.md)
 
 ```java
 // ========== MD5签名（必须复制此代码） ==========
@@ -122,4 +122,4 @@ public class SignUtils {
 
 ### 完整签名规则（多语言）
 
-详见 → [signing-rules.md](../hj-joinpay-pay-shared-base/protocol/signing-rules.md)
+详见 → [signing-rules.md](../../hj-joinpay-pay-shared-base/protocol/signing-rules.md)

@@ -22,7 +22,7 @@ quickstart-templates/
     ├── JoinPayService.java        # 核心服务（下单/查询/退款/回调验签）
     ├── PayController.java         # REST 接口层（7个接口）
     ├── NotifyController.java      # 异步回调接口（支付+退款）
-    └── application.yml.snippet    # application.yml 配置片段
+    └── application.yml            # application.yml 配置片段
 ```
 
 ---
@@ -115,7 +115,7 @@ src/main/java/{PACKAGE}/joinpay/NotifyController.java    ← 替换 ${PACKAGE}
 
 #### 第3批：配置追加
 
-将 `application.yml.snippet` 内容**追加**（不是覆盖）到项目的 `src/main/resources/application.yml` 文件末尾。
+将 `SpringBoot/application.yml` 内容**追加**（不是覆盖）到项目的 `src/main/resources/application.yml` 文件末尾。
 
 > 如果 application.yml 已有 `joinpay:` 配置段，应提示用户手动合并，不要自动覆盖。
 
