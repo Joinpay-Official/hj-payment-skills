@@ -96,12 +96,14 @@ public class AltMchSettlementExample {
         signParams.put("version", version);
 
         String sign = sign(signParams);
+        // dataJson is inserted as raw JSON so the HTTP data field remains an object.
         Map<String, String> request = new LinkedHashMap<>(signParams);
+        request.remove("data");
         request.put("sign", sign);
         if (aesKey != null && !aesKey.isEmpty()) {
             request.put("aes_key", aesKey);
         }
-        return postJson(URL, toJson(request));
+        return postJson(URL, toJsonWithObjectField(request, "data", dataJson));
     }
 
     private static String sign(Map<String, String> signParams) throws Exception {
@@ -189,6 +191,14 @@ public class AltMchSettlementExample {
         return map.entrySet().stream()
                 .map(e -> "\"" + e.getKey() + "\":\"" + jsonEscape(e.getValue()) + "\"")
                 .collect(Collectors.joining(",", "{", "}"));
+    }
+
+    private static String toJsonWithObjectField(Map<String, String> map, String field, String objectJson) {
+        String fields = map.entrySet().stream()
+                .map(e -> "\"" + e.getKey() + "\":\"" + jsonEscape(e.getValue()) + "\"")
+                .collect(Collectors.joining(","));
+        String objectField = "\"" + field + "\":" + objectJson;
+        return "{" + objectField + (fields.isEmpty() ? "" : "," + fields) + "}";
     }
 
     private static String jsonEscape(String value) {

@@ -81,8 +81,15 @@ def request_alloc_funds(method: str, version: str, data: dict) -> str:
         "sign_type": SIGN_TYPE,
         "version": version,
     }
-    request_body = dict(sign_params)
-    request_body["sign"] = sign(sign_params)
+    request_body = {
+        "data": data,
+        "mch_no": MERCHANT_NO,
+        "method": method,
+        "rand_str": sign_params["rand_str"],
+        "sign_type": SIGN_TYPE,
+        "version": version,
+        "sign": sign(sign_params),
+    }
     response = requests.post(URL, json=request_body, timeout=30)
     response.raise_for_status()
     return response.text
@@ -123,8 +130,15 @@ def create_alt_mch() -> str:
         "sign_type": SIGN_TYPE,
         "version": "1.1",
     }
-    request_body = dict(sign_params)
-    request_body["sign"] = sign(sign_params)
+    request_body = {
+        "data": data,
+        "mch_no": MERCHANT_NO,
+        "method": "altmch.create",
+        "rand_str": sign_params["rand_str"],
+        "sign_type": SIGN_TYPE,
+        "version": "1.1",
+        "sign": sign(sign_params),
+    }
     response = requests.post(URL, json=request_body, timeout=30)
     response.raise_for_status()
     return response.text

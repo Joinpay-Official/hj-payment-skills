@@ -99,7 +99,7 @@ metadata:
 ## 实现原则
 
 1. 先确认用户在做延迟分账/多次分账，而不是聚合支付交易或二级商户入网。
-2. 涉及代码生成时，优先从 [many-allocate-signing-rules.md](../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) 复制协议流程。
+2. 涉及代码生成时，优先从 [many-allocate-signing-rules.md](../hj-joinpay-pay-shared-base/protocol/many-allocate-signing-rules.md) 复制协议流程。所有 `altHandle.*` 接口的 HTTP 请求体中，`data` 必须是 JSON 对象；签名时单独将该对象序列化为紧凑 JSON 字符串，不得把该字符串作为请求字段发送。
 3. 金额字段统一按**字符串两位小数**处理，不要用浮点直接累加。
 4. `alt_order_no` 每次分账请求必须唯一；同一支付订单的多次分账要按业务顺序维护本地状态。
 5. 异步通知必须做幂等，且不能让旧状态覆盖终态。

@@ -104,9 +104,12 @@ public class ManyAllocateExample {
         signParams.put("sign_type", SIGN_TYPE);
         signParams.put("version", version);
 
+        // dataJson only participates in signing; insert it as raw JSON so the
+        // HTTP data field remains an object rather than an escaped string.
         Map<String, String> request = new LinkedHashMap<>(signParams);
+        request.remove("data");
         request.put("sign", sign(signParams));
-        return postJson(URL, toJson(request));
+        return postJson(URL, toJsonWithObjectField(request, "data", dataJson));
     }
 
     private static String sign(Map<String, String> signParams) throws Exception {
@@ -179,6 +182,14 @@ public class ManyAllocateExample {
         return map.entrySet().stream()
                 .map(e -> "\"" + e.getKey() + "\":\"" + jsonEscape(e.getValue()) + "\"")
                 .collect(Collectors.joining(",", "{", "}"));
+    }
+
+    private static String toJsonWithObjectField(Map<String, String> map, String field, String objectJson) {
+        String fields = map.entrySet().stream()
+                .map(e -> "\"" + e.getKey() + "\":\"" + jsonEscape(e.getValue()) + "\"")
+                .collect(Collectors.joining(","));
+        String objectField = "\"" + field + "\":" + objectJson;
+        return "{" + objectField + (fields.isEmpty() ? "" : "," + fields) + "}";
     }
 
     private static String jsonEscape(String value) {

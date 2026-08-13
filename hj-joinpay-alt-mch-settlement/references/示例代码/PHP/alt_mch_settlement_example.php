@@ -86,8 +86,15 @@ function request_alloc_funds($method, $version, $data, $aesKey = null) {
         'sign_type' => $signType,
         'version' => $version,
     ];
-    $request = $signParams;
-    $request['sign'] = sign_request($signParams);
+    $request = [
+        'data' => $data,
+        'mch_no' => $merchantNo,
+        'method' => $method,
+        'rand_str' => $signParams['rand_str'],
+        'sign_type' => $signType,
+        'version' => $version,
+        'sign' => sign_request($signParams),
+    ];
     if ($aesKey !== null && $aesKey !== '') {
         $request['aes_key'] = $aesKey;
     }

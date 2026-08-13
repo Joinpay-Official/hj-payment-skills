@@ -116,11 +116,15 @@ func requestAllocFunds(method, version string, data map[string]interface{}) stri
 		"sign_type": signType,
 		"version":   version,
 	}
-	requestBody := map[string]string{}
-	for k, v := range signParams {
-		requestBody[k] = v
+	requestBody := map[string]interface{}{
+		"data":      data,
+		"mch_no":    merchantNo,
+		"method":    method,
+		"rand_str":  signParams["rand_str"],
+		"sign_type": signType,
+		"version":   version,
+		"sign":      sign(signParams),
 	}
-	requestBody["sign"] = sign(signParams)
 
 	bodyBytes, _ := json.Marshal(requestBody)
 	resp, err := http.Post(apiURL, "application/json;charset=UTF-8", bytes.NewReader(bodyBytes))

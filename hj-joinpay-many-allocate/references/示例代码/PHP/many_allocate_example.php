@@ -66,8 +66,15 @@ function request_alloc_funds($method, $version, $data) {
         'sign_type' => $signType,
         'version' => $version,
     ];
-    $request = $signParams;
-    $request['sign'] = sign_request($signParams);
+    $request = [
+        'data' => $data,
+        'mch_no' => $merchantNo,
+        'method' => $method,
+        'rand_str' => $signParams['rand_str'],
+        'sign_type' => $signType,
+        'version' => $version,
+        'sign' => sign_request($signParams),
+    ];
 
     $ch = curl_init($url);
     curl_setopt_array($ch, [
